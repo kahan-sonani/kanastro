@@ -53,6 +53,7 @@ import { ProfileForm } from "./components/ProfileForm";
 import { SettingsForm } from "./components/SettingsForm";
 import { SelectControl } from "./components/SelectControl";
 import { SearchInput } from "./components/SearchInput";
+import { ProfilesSkeleton } from "./components/ProfilesSkeleton";
 import { ActionMenu } from "./components/ActionMenu";
 import { Modal } from "./components/Modal";
 import { NorthChart } from "./components/NorthChart";
@@ -565,9 +566,8 @@ export default function App() {
             </div>
           )}
           {!dataReady && (
-            <section className="panel loading-panel">
-              {error ? (
-                <>
+            error ? (
+              <section className="panel loading-panel">
                   <h3>Profiles could not be loaded</h3>
                   <button
                     className="button secondary"
@@ -575,14 +575,8 @@ export default function App() {
                   >
                     Retry loading
                   </button>
-                </>
-              ) : (
-                <>
-                  <LoaderCircle className="spin" size={25} />
-                  <p>Loading profiles…</p>
-                </>
-              )}
-            </section>
+              </section>
+            ) : <ProfilesSkeleton />
           )}
           {dataReady && mode === "library" && (
             <>

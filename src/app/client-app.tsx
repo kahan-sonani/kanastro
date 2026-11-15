@@ -2,14 +2,11 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import { AppSkeleton } from "../components/ProfilesSkeleton";
 
 const Kanastro = dynamic(() => import("../App"), {
   ssr: false,
-  loading: () => (
-    <div className="initial-loading" role="status">
-      Loading profiles…
-    </div>
-  ),
+  loading: () => <AppSkeleton />,
 });
 
 class ErrorBoundary extends React.Component<

@@ -1050,6 +1050,11 @@ export default function App() {
           )}
           <footer className="site-footer">
             <span>kanastro.</span>
+            <nav aria-label="Information">
+              <a href="/about">About</a>
+              <a href="/privacy">Privacy</a>
+              <a href="/terms">Terms</a>
+            </nav>
             <a href="/source/kanastro-source.tar.gz" download>
               Open source · AGPL-3.0 <ArrowUpRight size={12} />
             </a>

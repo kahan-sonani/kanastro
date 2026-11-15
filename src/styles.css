@@ -4324,6 +4324,16 @@ textarea {
 .content > .site-footer {
   margin-top: 16px;
 }
+.site-footer {
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: auto;
+}
 @media (min-width: 721px) {
   .app-shell.sidebar-is-collapsed {
     --sidebar-width: 52px;

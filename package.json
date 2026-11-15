@@ -1,0 +1,31 @@
+{
+  "name": "kanastro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "dev": "node scripts/prepare-assets.mjs && vite --host 127.0.0.1",
+    "build": "tsc --noEmit && node scripts/prepare-assets.mjs && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --experimental-strip-types --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@js-temporal/polyfill": "0.5.1",
+    "@kuntay/swisseph": "0.2.2",
+    "@kuntay/swisseph-data": "0.2.2",
+    "@radix-ui/react-dropdown-menu": "2.2.1",
+    "@radix-ui/react-select": "2.4.1",
+    "@supabase/supabase-js": "2.119.0",
+    "lucide-react": "0.468.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "~5.9.3",
+    "vite": "8.3.8"
+  }
+}

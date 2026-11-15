@@ -1,0 +1,23 @@
+Kanastro
+Copyright 2026 Kanastro contributors
+Application license: GNU Affero General Public License version 3 or later.
+
+Swiss Ephemeris © Astrodienst AG, Dieter Koch and Alois Treindl.
+Swiss Ephemeris is dual-licensed; this application uses the AGPL route.
+https://www.astro.com/swisseph/
+
+WebAssembly wrapper and build scripts: @kuntay/swisseph 0.2.2, AGPL-3.0-or-later.
+Corresponding source and build instructions for the pinned engine package:
+https://github.com/kuntayerkus/swisseph-wasm/tree/4c4b0f48b15d1795b44ed068e8532fd20d1e145c
+The app source download includes package-lock.json, which pins the dependency versions and integrity hashes.
+Ephemeris tables: @kuntay/swisseph-data 0.2.2, DE441-derived data under its bundled AGPL notice.
+
+Birthplace data: GeoNames, https://www.geonames.org/
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+Source: https://download.geonames.org/export/dump/cities15000.zip
+Snapshot downloaded 2026-11-15; reduced to names, country codes, coordinates and IANA time zones.
+
+React, Supabase JS, Radix UI and Temporal polyfill retain their respective dependency licenses.
+Lucide icons: ISC license. Google Fonts (DM Sans and Manrope): SIL Open Font License.
+
+Method references are documented in METHODS.md. The app's rule functions implement the listed mathematical conventions; no PyJHora source is embedded.

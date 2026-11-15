@@ -348,6 +348,24 @@ strong {
   border-radius: 4px;
   white-space: nowrap;
 }
+.count-badge {
+  --count-badge-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 var(--count-badge-size);
+  width: var(--count-badge-size);
+  height: var(--count-badge-size);
+  padding: 0;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+}
 .panel {
   border: 1px solid var(--line);
   border-radius: 9px;
@@ -476,10 +494,6 @@ strong {
   align-items: center;
   font-size: 13px;
   font-weight: 550;
-}
-.library-tabs > .pill {
-  padding: 3px 7px;
-  font-size: 10px;
 }
 .library-tools {
   display: flex;
@@ -3616,13 +3630,7 @@ textarea {
   background: var(--nav-hover);
 }
 .nav-count {
-  flex: 0 0 auto;
   margin-left: auto;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: var(--nav-surface);
-  font-size: 10px;
-  line-height: 15px;
 }
 .sidebar-bottom {
   margin: auto -14px 0;
@@ -3930,9 +3938,8 @@ textarea {
   height: 18px;
 }
 .nav-count {
-  padding: 1px 4px;
+  --count-badge-size: 18px;
   font-size: 9px;
-  line-height: 14px;
 }
 .sidebar-bottom {
   margin: auto -8px 0;

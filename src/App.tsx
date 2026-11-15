@@ -54,6 +54,7 @@ import { SettingsForm } from "./components/SettingsForm";
 import { SelectControl } from "./components/SelectControl";
 import { SearchInput } from "./components/SearchInput";
 import { ProfilesSkeleton } from "./components/ProfilesSkeleton";
+import { CountBadge } from "./components/CountBadge";
 import { ActionMenu } from "./components/ActionMenu";
 import { Modal } from "./components/Modal";
 import { NorthChart } from "./components/NorthChart";
@@ -438,7 +439,7 @@ export default function App() {
           >
             <LayoutGrid size={19} />
             <span className="nav-label">My profiles</span>
-            <span className="nav-count">{profiles.length}</span>
+            <CountBadge className="nav-count" count={profiles.length} />
           </button>
           <button
             aria-label="Compare charts"
@@ -603,7 +604,7 @@ export default function App() {
               <div className="library-toolbar">
                 <div className="library-tabs">
                   <span>All profiles</span>
-                  <span className="pill">{profiles.length}</span>
+                  <CountBadge count={profiles.length} />
                 </div>
                 <div className="library-tools">
                   <SearchInput value={search} onChange={setSearch} />

@@ -2,12 +2,12 @@ import { createClient } from "@supabase/supabase-js";
 import { validateProfile, validateSettings } from "../astro/birth.ts";
 import { DEFAULT_SETTINGS } from "../astro/types.ts";
 import type { Profile, Settings } from "../astro/types.ts";
-const url = import.meta.env.VITE_SUPABASE_URL,
-  key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL,
+  key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 export const supabase =
   url && key ? createClient(url, key, { auth: { flowType: "pkce" } }) : null;
 export async function googleProviderEnabled(): Promise<boolean> {
-  if (!supabase) return false;
+  if (!supabase || !url || !key) return false;
   const response = await fetch(`${url}/auth/v1/settings`, {
     headers: { apikey: key },
     signal: AbortSignal.timeout(10000),

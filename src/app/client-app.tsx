@@ -1,7 +1,16 @@
+"use client";
+
 import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./styles.css";
+import dynamic from "next/dynamic";
+
+const Kanastro = dynamic(() => import("../App"), {
+  ssr: false,
+  loading: () => (
+    <div className="initial-loading" role="status">
+      Loading profiles…
+    </div>
+  ),
+});
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -15,26 +24,23 @@ class ErrorBoundary extends React.Component<
     if (this.state.error)
       return (
         <main className="fatal-error">
-          <h1>Let’s reopen your workspace.</h1>
-          <p>
-            The interface encountered an unexpected error. Your saved profiles
-            have not been removed.
-          </p>
+          <h1>Unable to open Kanastro.</h1>
           <button
             className="button primary"
             onClick={() => window.location.reload()}
           >
-            Reload Kanastro
+            Reload
           </button>
         </main>
       );
     return this.props.children;
   }
 }
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+
+export default function ClientApp() {
+  return (
     <ErrorBoundary>
-      <App />
+      <Kanastro />
     </ErrorBoundary>
-  </React.StrictMode>,
-);
+  );
+}

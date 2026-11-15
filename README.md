@@ -1,10 +1,10 @@
 # Kanastro
 
-Responsive, open-source Vedic astrology workspace. Profiles have names and birth details, with no relationship categories. Comparison starts with two profiles and one shared division selector. The sidebar is expanded by default and collapsible; light/dark mode persists on the device.
+Responsive, open-source Vedic astrology application built with Next.js App Router. The application exports static pages; calculations run in a browser worker. Profiles have names and birth details, with no relationship categories. Comparison starts with two profiles and one shared division selector. The sidebar is expanded by default and collapsible; light/dark mode persists on the device.
 
 ## Run
 
-Use Node 22.18+ (Node 25 is used in the current development environment).
+Use Node 22.18+ (Node 25 is used in the current development environment). `npm run dev` serves Next.js on port 5173. `npm run preview` serves the production static export on port 4173.
 
 ```sh
 npm ci
@@ -15,11 +15,11 @@ npm run dev
 The app supports local profiles without an account. With Supabase configuration, Google sign-in saves profiles to an owner-restricted database. Existing local profiles are copied to an account only when the user selects that action.
 
 ```dotenv
-VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
 ```
 
-These are public browser settings. Never use a secret/service-role key in a `VITE_` variable. `.env.local` is ignored by Git and excluded from the downloadable source archive.
+These are public browser settings. Never use a secret/service-role key in a `NEXT_PUBLIC_` variable. `.env.local` is ignored by Git and excluded from the downloadable source archive.
 
 ```sh
 npm test
@@ -57,7 +57,7 @@ The tables are `public.kundli_profiles` and `public.account_preferences`. Both e
 
 `supabase/tests/ownership.sql` verifies owner access, cross-account denial, owner-spoofing rejection and anonymous denial. It creates transaction-scoped dummy users and rows and rolls everything back. This test passed against the hosted project. The post-migration Supabase security advisor returned no findings.
 
-Project-level Auth settings are separate from database RLS. The production Site URL and three exact redirect URLs have been configured. Email/password sign-in and magic-link/OTP sign-in are disabled; anonymous and phone sign-in remain disabled. Email confirmation and secure email change remain enabled. Secure password change and current-password reauthentication were enabled as defensive defaults. Google sign-in is enabled. Nonce checks remain enabled, and users without an email are not allowed.
+Project-level Auth settings are separate from database RLS. The canonical Site URL is `https://kanastro.kahansonani.com`, with exact redirect URLs for this domain, the former preview, and local development. Email/password sign-in and magic-link/OTP sign-in are disabled; anonymous and phone sign-in remain disabled. Email confirmation and secure email change remain enabled. Secure password change and current-password reauthentication were enabled as defensive defaults. Google sign-in is enabled. Nonce checks remain enabled, and users without an email are not allowed.
 
 Provider setup and future deployment checklist:
 
@@ -68,9 +68,9 @@ Provider setup and future deployment checklist:
 5. Retain refresh-token rotation and an appropriate JWT expiry. Do not enable paid session policies, branches, or add-ons for this free-tier deployment.
 6. A Google Cloud OAuth consent app may need the owner to configure its audience and authorized domains before other users can sign in.
 
-`supabase/config.toml` contains local development defaults; it is not proof of hosted Auth changes. The Google web client `Kanastro Web` is configured in Google Cloud project `sylvan-agility-514814-d4`. The OAuth audience is External / Testing, with the project owner added as a test user. End-to-end Google login and authenticated profile creation, reload, and deletion were verified on 2026-11-15; the temporary verification profile was removed. Before opening Google login to the public, complete Google branding requirements and change the Google app from Testing to Production. The current Sites deployment is a private preview. OAuth credentials are configured in Supabase and are not included in the frontend environment or repository.
+`supabase/config.toml` contains local development defaults; it is not proof of hosted Auth changes. The Google web client `Kanastro Web` is configured in Google Cloud project `sylvan-agility-514814-d4`. The OAuth audience is External / Testing, with the project owner added as a test user. End-to-end Google login and authenticated profile creation, reload, and deletion were verified on 2026-11-15; the temporary verification profile was removed. Before opening Google login to the public, complete Google branding requirements and change the Google app from Testing to Production. The frontend is configured for direct Vercel deployment from `kahan-sonani/kanastro`, with `kanastro.kahansonani.com` as the production domain. OAuth credentials are configured in Supabase and are not included in the frontend environment or repository.
 
-The optional GitHub production integration can deploy migrations from this repository. Keep paid preview branching disabled. Frontend hosting is independent: deploy `dist/` to a static host, and rebuild when public environment configuration changes.
+The optional GitHub production integration can deploy migrations from this repository. Keep paid preview branching disabled. Frontend hosting is independent: Vercel runs `npm run build` and serves the Next.js static export from `out/`. Rebuild when public environment configuration changes. The Supabase data model is unchanged by the hosting migration.
 
 ## Validation
 
@@ -91,3 +91,14 @@ AGPL-3.0-or-later. The deployed footer provides a corresponding-source archive g
 Birthplace search uses a bundled GeoNames cities15000 snapshot with 34,216 places, downloaded on 2026-11-15. Coordinates describe a city centre and can be refined in the profile form. City data does not establish the accuracy of a user's recorded birth location or time.
 
 Cloud profiles are not cached for offline writes in this version. Local profiles belong to the current browser origin; use export/import to move between localhost, preview and production. Browser storage can be cleared, so exports remain important.
+
+## Frontend deployment
+
+- Framework: Next.js 16.4.6, App Router, static export.
+- Repository: `kahan-sonani/kanastro`, production branch `main`.
+- Build command: `npm run build`; output directory: `out`; install command: `npm ci`.
+- Set the two `NEXT_PUBLIC_SUPABASE_*` values in Vercel for Production and Preview. Google OAuth secrets stay in Supabase Auth.
+- Connect GitHub through the personal account. Git pushes should use the configured `github-personal` SSH remote; do not use `geekaf-kahan`.
+- `vercel.json` configures security headers and caching. The CSP permits Next's inline bootstrap scripts and WASM while restricting external scripts.
+- The browser calculation worker is bundled separately with esbuild; its WASM and ephemeris files are served as static assets.
+- The new source no longer declares a ChatGPT Sites hosting binding. During migration, keep the old deployment available until Vercel and the custom domain are verified.

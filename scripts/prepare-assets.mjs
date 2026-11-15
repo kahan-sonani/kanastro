@@ -9,6 +9,7 @@ import {
 import { resolve, join } from "node:path";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { build } from "esbuild";
 const root = resolve(import.meta.dirname, "..");
 const pkg = join(root, "node_modules/@kuntay/swisseph-data");
 const manifest = JSON.parse(await readFile(join(pkg, "manifest.json"), "utf8"));
@@ -26,6 +27,24 @@ await copyFile(
   join(pkg, "manifest.json"),
   join(root, "public/ephemeris/manifest.json"),
 );
+// Keep the WASM worker independent of the UI framework's bundler.
+await mkdir(join(root, "public/engine"), { recursive: true });
+await build({
+  entryPoints: [join(root, "src/astro/calculator.worker.ts")],
+  outfile: join(root, "public/engine/calculator.worker.js"),
+  bundle: true,
+  format: "esm",
+  platform: "browser",
+  target: "es2022",
+  minify: true,
+  external: ["node:*"],
+  legalComments: "eof",
+});
+await copyFile(
+  join(root, "node_modules/@kuntay/swisseph/wasm/swisseph.wasm"),
+  join(root, "public/engine/swisseph.wasm"),
+);
+
 // Provide the application's corresponding source to every deployed user. Only allowlisted paths enter this archive.
 await mkdir(join(root, "public/source"), { recursive: true });
 const names = [
@@ -36,8 +55,9 @@ const names = [
   "package.json",
   "package-lock.json",
   "tsconfig.json",
-  "vite.config.ts",
-  "index.html",
+  "next.config.mjs",
+  "next-env.d.ts",
+  "vercel.json",
   ".env.example",
   "LICENSE",
   "NOTICE",
@@ -45,7 +65,6 @@ const names = [
   "METHODS.md",
   "public/cities.json",
   "public/favicon.svg",
-  "public/_headers",
 ];
 const included = [];
 for (const name of names) {

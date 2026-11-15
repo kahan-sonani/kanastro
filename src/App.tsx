@@ -52,6 +52,7 @@ import {
 import { ProfileForm } from "./components/ProfileForm";
 import { SettingsForm } from "./components/SettingsForm";
 import { SelectControl } from "./components/SelectControl";
+import { SearchInput } from "./components/SearchInput";
 import { ActionMenu } from "./components/ActionMenu";
 import { Modal } from "./components/Modal";
 import { NorthChart } from "./components/NorthChart";
@@ -72,8 +73,7 @@ const EXAMPLE: Profile = {
   timeZone: "Asia/Kolkata",
   certainty: "exact",
   disambiguation: "reject",
-  notes:
-    "Illustrative birth details for exploring the workspace. This is not a saved personal profile.",
+  notes: "Illustrative birth details. This is not a saved profile.",
   createdAt: "2026-11-15T00:00:00Z",
   updatedAt: "2026-11-15T00:00:00Z",
 };
@@ -399,30 +399,32 @@ export default function App() {
         aria-hidden={isMobile && !mobileMenu ? true : undefined}
         className={`sidebar ${mobileMenu ? "sidebar-open" : ""}`}
       >
-        <button
-          className="brand"
-          onClick={() => {
-            setMode("library");
-            setMobileMenu(false);
-          }}
-          aria-label="Kanastro home"
-        >
-          <span className="brand-symbol">✧</span>
-          <span className="brand-word">
-            kanastro<span className="brand-dot">.</span>
-          </span>
-        </button>
-        <button
-          id="close-mobile-navigation"
-          className="icon-button sidebar-close"
-          aria-label="Close navigation"
-          onClick={() => {
-            setMobileMenu(false);
-            document.getElementById("open-mobile-navigation")?.focus();
-          }}
-        >
-          <X size={19} />
-        </button>
+        <div className="sidebar-header">
+          <button
+            className="brand"
+            onClick={() => {
+              setMode("library");
+              setMobileMenu(false);
+            }}
+            aria-label="Kanastro home"
+          >
+            <span className="brand-symbol">✧</span>
+            <span className="brand-word">
+              kanastro<span className="brand-dot">.</span>
+            </span>
+          </button>
+          <button
+            id="close-mobile-navigation"
+            className="icon-button sidebar-close"
+            aria-label="Close navigation"
+            onClick={() => {
+              setMobileMenu(false);
+              document.getElementById("open-mobile-navigation")?.focus();
+            }}
+          >
+            <X size={19} />
+          </button>
+        </div>
         <nav className="primary-nav" aria-label="Main navigation">
           <button
             aria-label="My profiles"
@@ -463,6 +465,22 @@ export default function App() {
         </nav>
         <div className="sidebar-bottom">
           <button
+            className="sidebar-collapse"
+            type="button"
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-expanded={!collapsed}
+            aria-controls="main-sidebar"
+            onClick={() => setCollapsed((value) => !value)}
+          >
+            {collapsed ? (
+              <PanelLeftOpen size={20} />
+            ) : (
+              <PanelLeftClose size={20} />
+            )}
+            <span className="nav-label">Collapse sidebar</span>
+          </button>
+          <button
             className="account-button"
             aria-label="Account and storage"
             title="Account and storage"
@@ -482,37 +500,22 @@ export default function App() {
                 <Monitor size={19} />
               )}
             </span>
-            <span>
+            <span className="account-copy">
               <strong>
                 {session
                   ? (session.user.user_metadata.full_name ?? "Your account")
-                  : "Local workspace"}
+                  : "Local profiles"}
               </strong>
               <small>
                 {session ? "Private cloud storage" : "Saved on this device"}
               </small>
             </span>
-            <ChevronRight size={15} />
           </button>
         </div>
       </aside>
       <div className="main-shell" inert={isMobile && mobileMenu}>
         <header className="topbar">
           <div className="breadcrumb">
-            <button
-              className="icon-button desktop-collapse"
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              aria-expanded={!collapsed}
-              aria-controls="main-sidebar"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              {collapsed ? (
-                <PanelLeftOpen size={20} />
-              ) : (
-                <PanelLeftClose size={20} />
-              )}
-            </button>
             <button
               id="open-mobile-navigation"
               className="icon-button mobile-menu-button"
@@ -523,8 +526,6 @@ export default function App() {
             >
               <Menu size={22} />
             </button>
-            <span>Workspace</span>
-            <ChevronRight size={13} />
             <strong>
               {mode === "library"
                 ? "My profiles"
@@ -567,7 +568,7 @@ export default function App() {
             <section className="panel loading-panel">
               {error ? (
                 <>
-                  <h3>Workspace could not be loaded</h3>
+                  <h3>Profiles could not be loaded</h3>
                   <button
                     className="button secondary"
                     onClick={() => window.location.reload()}
@@ -578,7 +579,7 @@ export default function App() {
               ) : (
                 <>
                   <LoaderCircle className="spin" size={25} />
-                  <p>Opening your workspace…</p>
+                  <p>Loading profiles…</p>
                 </>
               )}
             </section>
@@ -611,15 +612,7 @@ export default function App() {
                   <span className="pill">{profiles.length}</span>
                 </div>
                 <div className="library-tools">
-                  <div className="search-field">
-                    <Search size={17} />
-                    <input
-                      aria-label="Search profiles"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      placeholder="Search profiles…"
-                    />
-                  </div>
+                  <SearchInput value={search} onChange={setSearch} />
                   <SelectControl
                     label="Sort profiles"
                     className="sort-select"
@@ -655,13 +648,6 @@ export default function App() {
                     <BookOpen size={27} />
                   </div>
                   <h3>No profiles yet</h3>
-                  <button
-                    className="button primary"
-                    onClick={() => setForm("new")}
-                  >
-                    <Plus size={17} />
-                    New profile
-                  </button>
                   <div className="empty-actions">
                     <button
                       className="text-link"
@@ -1207,7 +1193,7 @@ export default function App() {
       )}
       {accountOpen && (
         <Modal
-          title={session ? "Your account" : "Your workspace"}
+          title="Account"
           onClose={() => setAccountOpen(false)}
           busy={busy}
         >

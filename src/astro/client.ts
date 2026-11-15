@@ -14,7 +14,7 @@ export function compute(
   settings: Settings,
 ): Promise<Chart[]> {
   if (!worker) {
-    worker = new Worker(new URL("./calculator.worker.ts", import.meta.url), {
+    worker = new Worker("/engine/calculator.worker.js", {
       type: "module",
     });
     worker.onmessage = ({ data }) => {

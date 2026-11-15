@@ -6,3 +6,9 @@ dist/
 .DS_Store
 public/ephemeris/
 public/source/
+
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+public/engine/

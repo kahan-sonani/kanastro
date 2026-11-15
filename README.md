@@ -96,7 +96,7 @@ Cloud profiles are not cached for offline writes in this version. Local profiles
 
 - Framework: Next.js 16.4.6, App Router, static export.
 - Repository: `kahan-sonani/kanastro`, production branch `main`.
-- Build command: `npm run build`; output directory: `out`; install command: `npm ci`.
+- Build command: `npm run build`; install command: `npm ci`. Leave the Vercel Output Directory override unset so its Next.js adapter can read `.next` build metadata and publish the static export.
 - Set the two `NEXT_PUBLIC_SUPABASE_*` values in Vercel for Production and Preview. Google OAuth secrets stay in Supabase Auth.
 - Connect GitHub through the personal account. Git pushes should use the configured `github-personal` SSH remote; do not use `geekaf-kahan`.
 - `vercel.json` configures security headers and caching. The CSP permits Next's inline bootstrap scripts and WASM while restricting external scripts.

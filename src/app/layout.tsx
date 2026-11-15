@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "../styles.css";
+import "../ui.css";
 
 export const metadata: Metadata = {
   title: "Kanastro",

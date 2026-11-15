@@ -43,8 +43,8 @@ export function SelectControl({
         <Select.Content
           className="select-content"
           position="popper"
-          sideOffset={6}
-          collisionPadding={12}
+          sideOffset={4}
+          collisionPadding={8}
           align="start"
         >
           <Select.ScrollUpButton className="select-scroll">

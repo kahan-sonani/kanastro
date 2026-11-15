@@ -644,19 +644,21 @@ export function ChartDetails({
         )}
         {tab === "Divisional charts" && (
           <div className="varga-layout">
+            <div className="varga-mobile-select">
+              <DivisionSelect value={selectedVarga} onChange={setSelectedVarga} label="Divisional chart" />
+            </div>
             <section className="panel varga-menu">
-              <span className="eyebrow">SHODASHAVARGA</span>
+              <span className="eyebrow">Divisions</span>
               {VARGAS.map((v) => (
                 <button
                   key={v.n}
                   className={selectedVarga === v.n ? "selected" : ""}
+                  aria-pressed={selectedVarga === v.n}
+                  title={`${v.name} · ${v.focus}`}
                   onClick={() => setSelectedVarga(v.n)}
                 >
                   <span className="varga-code">D{v.n}</span>
-                  <span>
-                    <strong>{v.name}</strong>
-                    <small>{v.focus}</small>
-                  </span>
+                  <span className="varga-name">{v.name}</span>
                 </button>
               ))}
             </section>

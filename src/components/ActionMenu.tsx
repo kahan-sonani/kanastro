@@ -29,8 +29,8 @@ export function ActionMenu({
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="end"
-          sideOffset={5}
-          collisionPadding={12}
+          sideOffset={4}
+          collisionPadding={8}
           className="action-menu-content"
         >
           {actions.map((action) => (

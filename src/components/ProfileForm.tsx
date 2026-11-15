@@ -282,9 +282,9 @@ export function ProfileForm({
           </div>
         )}
         <label>
-          Notes <span className="optional">Optional</span>
+          <span className="field-label">Notes <span className="optional">Optional</span></span>
           <textarea
-            rows={3}
+            rows={2}
             maxLength={20000}
             value={form.notes}
             placeholder=""
@@ -297,19 +297,14 @@ export function ProfileForm({
           </div>
         )}
         <div className="modal-footer">
-          <span />
+          <p className="attribution">
+            <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a> · CC BY 4.0
+          </p>
           <button className="button primary" disabled={busy} type="submit">
             {busy && <LoaderCircle size={16} className="spin" />}
             {busy ? "Saving…" : profile ? "Save changes" : "Create profile"}
           </button>
         </div>
-        <p className="attribution">
-          Place data:{" "}
-          <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">
-            GeoNames
-          </a>{" "}
-          · CC BY 4.0
-        </p>
       </form>
     </Modal>
   );

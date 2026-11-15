@@ -1127,7 +1127,7 @@ export default function App() {
                 ))}
               </div>
               <div className="modal-footer">
-                <span className="muted small">{draftIds.length} selected</span>
+                <span className="selection-count muted small"><CountBadge count={draftIds.length} /> selected</span>
                 <button
                   className="button primary"
                   disabled={draftIds.length < 2}

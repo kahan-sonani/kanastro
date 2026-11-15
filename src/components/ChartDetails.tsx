@@ -242,18 +242,20 @@ function Dashas({ chart }: { chart: Chart }) {
           <strong>{chart.settings.yearDays} days</strong>
         </div>
       </div>
-      <div className="period-header">
-        <span>Period lord</span>
-        <span>Starts · UTC</span>
-        <span>Ends · UTC</span>
+      <div className="period-table">
+        <div className="period-header">
+          <span>Period lord</span>
+          <span>Starts · UTC</span>
+          <span>Ends · UTC</span>
+        </div>
+        {periods.map((p) => (
+          <PeriodRow
+            key={`${chart.utc}-${chart.settings.yearDays}-${p.start}`}
+            period={p}
+            now={now}
+          />
+        ))}
       </div>
-      {periods.map((p) => (
-        <PeriodRow
-          key={`${chart.utc}-${chart.settings.yearDays}-${p.start}`}
-          period={p}
-          now={now}
-        />
-      ))}
     </section>
   );
 }

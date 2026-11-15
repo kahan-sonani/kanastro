@@ -43,7 +43,7 @@ npm run preview
 
 ## Scope boundaries
 
-This is the first working milestone, not a claim to implement every Jyotish tradition. Bhava Chalit, Shadbala, Bhava Bala, Ashtakavarga, Vimsopaka, broad yoga catalogues, Jaimini dashas, additional dasha systems, transits, rectification history, cloud comparison-workspace saving, account deletion, full offline/PWA caching and automated database backups remain later modules.
+This is the first working milestone, not a claim to implement every Jyotish tradition. Bhava Chalit, Shadbala, Bhava Bala, Ashtakavarga, Vimsopaka, broad yoga catalogues, Jaimini dashas, additional dasha systems, transits, rectification history, saving comparisons to an account, account deletion, full offline/PWA caching and automated database backups remain later modules.
 
 Unknown birth times are not assigned an invented ascendant. A birth time is currently required; approximate times are explicitly labelled. Birth dates are limited to 1800–2399, matching the bundled data. See [METHODS.md](METHODS.md) for all conventions and accuracy boundaries.
 
@@ -94,6 +94,7 @@ Cloud profiles are not cached for offline writes in this version. Local profiles
 
 ## Frontend deployment
 
+- Production: [kanastro.kahansonani.com](https://kanastro.kahansonani.com), hosted directly on the personal Vercel Hobby project `kanastro`. Pushes to `main` automatically deploy from GitHub.
 - Framework: Next.js 16.4.6, App Router, static export.
 - Repository: `kahan-sonani/kanastro`, production branch `main`.
 - Build command: `npm run build`; install command: `npm ci`. Leave the Vercel Output Directory override unset so its Next.js adapter can read `.next` build metadata and publish the static export.
@@ -101,4 +102,6 @@ Cloud profiles are not cached for offline writes in this version. Local profiles
 - Connect GitHub through the personal account. Git pushes should use the configured `github-personal` SSH remote; do not use `geekaf-kahan`.
 - `vercel.json` configures security headers and caching. The CSP permits Next's inline bootstrap scripts and WASM while restricting external scripts.
 - The browser calculation worker is bundled separately with esbuild; its WASM and ephemeris files are served as static assets.
-- The new source no longer declares a ChatGPT Sites hosting binding. During migration, keep the old deployment available until Vercel and the custom domain are verified.
+- Hostinger DNS points the `kanastro` CNAME to `b59cdf2f24f81828.vercel-dns-017.com` with a 300-second TTL. Root-domain records are independent.
+- The migration was completed on 2026-11-15. HTTPS, Next.js assets, the calculation worker, Google sign-in returning to the canonical domain, and phone/tablet layouts were verified. Production has no hosting login gateway or editing toolbar.
+- The custom domain was detached from ChatGPT Sites, and its obsolete Sites verification TXT records were removed. The old platform deployment remains available separately. This source no longer declares a Sites hosting binding; deploy through Vercel.

@@ -57,7 +57,7 @@ The tables are `public.kundli_profiles` and `public.account_preferences`. Both e
 
 `supabase/tests/ownership.sql` verifies owner access, cross-account denial, owner-spoofing rejection and anonymous denial. It creates transaction-scoped dummy users and rows and rolls everything back. This test passed against the hosted project. The post-migration Supabase security advisor returned no findings.
 
-Project-level Auth settings are separate from database RLS. The production Site URL and three exact redirect URLs have been configured. Email/password sign-in and magic-link/OTP sign-in are disabled; anonymous and phone sign-in remain disabled. Email confirmation and secure email change remain enabled. Secure password change and current-password reauthentication were enabled as defensive defaults. Google remains unavailable until the owner supplies its OAuth client credentials.
+Project-level Auth settings are separate from database RLS. The production Site URL and three exact redirect URLs have been configured. Email/password sign-in and magic-link/OTP sign-in are disabled; anonymous and phone sign-in remain disabled. Email confirmation and secure email change remain enabled. Secure password change and current-password reauthentication were enabled as defensive defaults. Google sign-in is enabled. Nonce checks remain enabled, and users without an email are not allowed.
 
 Provider setup and future deployment checklist:
 
@@ -68,7 +68,7 @@ Provider setup and future deployment checklist:
 5. Retain refresh-token rotation and an appropriate JWT expiry. Do not enable paid session policies, branches, or add-ons for this free-tier deployment.
 6. A Google Cloud OAuth consent app may need the owner to configure its audience and authorized domains before other users can sign in.
 
-`supabase/config.toml` contains local development defaults; it is not proof of hosted Auth changes. The user must complete Google provider credentials before end-to-end Google login can be verified.
+`supabase/config.toml` contains local development defaults; it is not proof of hosted Auth changes. The Google web client `Kanastro Web` is configured in Google Cloud project `sylvan-agility-514814-d4`. The OAuth audience is External / Testing, with the project owner added as a test user. End-to-end Google login and authenticated profile creation, reload, and deletion were verified on 2026-11-15; the temporary verification profile was removed. Before opening Google login to the public, complete Google branding requirements and change the Google app from Testing to Production. The current Sites deployment is a private preview. OAuth credentials are configured in Supabase and are not included in the frontend environment or repository.
 
 The optional GitHub production integration can deploy migrations from this repository. Keep paid preview branching disabled. Frontend hosting is independent: deploy `dist/` to a static host, and rebuild when public environment configuration changes.
 
